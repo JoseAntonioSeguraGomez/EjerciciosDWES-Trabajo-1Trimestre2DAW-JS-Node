@@ -1,0 +1,143 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3cc11d24.ff01a2",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
+        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "23cfc6d8e3f6ee11",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Piedra",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "Piedra",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 280,
+        "wires": [
+            [
+                "5df1a2f99ad0f49a"
+            ]
+        ]
+    },
+    {
+        "id": "5df1a2f99ad0f49a",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Funcion1",
+        "func": "//Elijo los posibles resultados\nlet opciones = [\"Piedra\", \"Papel\", \"Tijeras\"];\n\n//Recojo el resultado del usuario\nlet usuario = msg.topic;\n\n//Hago que la maquina obtenga un valor aleatorio\nlet maquina = opciones[Math.floor(Math.random() * 3)];\n\n//Declaro la variable que va a almacenar el resultado\nlet resultado;\n\n//Condiciones\nif(usuario === maquina){\n    resultado = \"Empate\";\n}else if((usuario === \"Piedra\" && maquina === \"Tijeras\")||\n(usuario === \"Papel\" && maquina === \"Piedra\")||\n(usuario === \"Tijeras\" && maquina === \"Papel\")){\n    resultado = \"Victoria\";\n}else{\n    resultado = \"Has perdido\"\n}\n\n//Resultado del DEBUG\nmsg.payload = \"Usuario(\" + usuario + \"), Máquina(\" + maquina + \"). Resultado: \" + resultado;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 340,
+        "wires": [
+            [
+                "ef029f06d25f13d2"
+            ]
+        ]
+    },
+    {
+        "id": "ef029f06d25f13d2",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Imprimir",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "b583f385155bcd33",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Papel",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "Papel",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 340,
+        "wires": [
+            [
+                "5df1a2f99ad0f49a"
+            ]
+        ]
+    },
+    {
+        "id": "27332870465f7bc6",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Tijeras",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "Tijeras",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 400,
+        "wires": [
+            [
+                "5df1a2f99ad0f49a"
+            ]
+        ]
+    }
+]
