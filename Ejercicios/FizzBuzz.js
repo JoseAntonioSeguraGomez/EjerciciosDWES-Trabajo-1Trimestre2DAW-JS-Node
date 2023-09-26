@@ -12,4 +12,4 @@ for(let i = 1; i <= numero; i++ ){
     }else{
         console.log(i + " ,");
     }
-};
+}
