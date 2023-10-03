@@ -10,8 +10,8 @@ function danceConvert(pin) {
   const pinBailes = [];
 
   for (let i = 0; i < pinFinal.length; i++) {
-    const index = pinFinal[i] % MOVES.length;
-    pinBailes.push(MOVES[index]);
+    const indice = pinFinal[i] % MOVES.length;
+    pinBailes.push(MOVES[indice]);
   }
 
   return pinBailes;
