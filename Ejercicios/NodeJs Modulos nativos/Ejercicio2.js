@@ -18,15 +18,31 @@ eleccionUsuario.question("Elija una opción (1/2/3): ", (opcion) => {
     console.log("Has elegido la opción 1: Crear nueva nota:");
     eleccionUsuario.question("Introduzca a continuación el nombre de la nota que desea crear:", (nombre) => {
       const archivoPath = path.resolve(directorio, nombre + '.note');
-      eleccionUsuario.question("Ahora introduzca el contenido que desea agregar:", (contenido) => {
-        fs.writeFile(archivoPath, contenido, (err) => {
-          if (err) {
-            console.error('Error al crear el fichero', err);
+
+      let nuevoContenido = '';
+      let saltosDeLinea = 0;
+
+      console.log("Ahora introduzca el contenido que desea agregar. Presione Enter dos veces para finalizar:");
+
+      eleccionUsuario.on('line', linea => {
+        if (linea === '') {
+          saltosDeLinea++;
+          if (saltosDeLinea === 2) {
+            fs.writeFile(archivoPath, nuevoContenido, (err) => {
+              if (err) {
+                console.error('Error al crear el fichero', err);
+              } else {
+                console.log('Fichero creado con éxito');
+              }
+              eleccionUsuario.close();
+            });
           } else {
-            console.log('Fichero creado con éxito');
+            nuevoContenido += '\n';
           }
-          eleccionUsuario.close();
-        });
+        } else {
+          saltosDeLinea = 0;
+          nuevoContenido += linea + '\n';
+        }
       });
     });
   } else if (opcion === '2') {
