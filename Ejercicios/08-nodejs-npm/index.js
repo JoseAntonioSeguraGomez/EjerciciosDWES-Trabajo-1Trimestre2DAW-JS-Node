@@ -41,9 +41,13 @@ const printFormattedDate = () => {
     const now = new Date();
     const seconds = now.getSeconds();
     const time = date.format(now, 'HH:mm:ss');
+    let formattedDate = date.format(now, 'DD/MM/YYYY');
+    const days = date.format(now, 'DD');
+    const month = date.format(now, 'MM');
+    const year = date.format(now, 'YYYY');
 
     if (seconds === 0 || seconds % 10 === 0) {
-        console.log(`${date.format(now, 'DD/MM/YYYY')} ${chalk.green(time)}`);
+        console.log(`${days}/${chalk.green(month)}/${chalk.green(year)} ${chalk.green(time)}`);
     } else {
         console.log(`${date.format(now, 'DD/MM/YYYY')} ${time}`);
     }
