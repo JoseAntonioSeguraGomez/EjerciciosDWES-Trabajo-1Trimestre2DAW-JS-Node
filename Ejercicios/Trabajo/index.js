@@ -1,7 +1,7 @@
 const readline = require('readline');
 const fs = require('fs');
 const path = require('path');
-const directorio = 'C:/Users/joans/Documents/GitHub/DWES/Ejercicios/NodeJs Modulos nativos';
+const directorio = 'C:/Users/joans/Documents/GitHub/DWES/Ejercicios/Trabajo';
 
 const eleccionUsuario = readline.createInterface({
   input: process.stdin,
@@ -13,8 +13,9 @@ console.log("1. Crear nueva nota");
 console.log("2. Editar nota existente");
 console.log("3. Eliminar nota");
 
-eleccionUsuario.question("Elija una opción (1/2/3): ", (opcion) => {
-  if (opcion === '1') {
+if(process.argv.length > 2){
+  const opcion = process.argv[2];
+    if (opcion === '1') {
     console.log("Has elegido la opción 1: Crear nueva nota:");
     eleccionUsuario.question("Introduzca a continuación el nombre de la nota que desea crear:", (nombre) => {
       const archivoPath = path.resolve(directorio, nombre + '.note');
@@ -162,4 +163,5 @@ eleccionUsuario.question("Elija una opción (1/2/3): ", (opcion) => {
     console.log("Opción no válida");
     eleccionUsuario.close();
   }
-});
+
+};

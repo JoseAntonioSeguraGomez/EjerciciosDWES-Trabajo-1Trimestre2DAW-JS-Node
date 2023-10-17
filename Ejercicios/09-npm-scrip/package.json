@@ -1,0 +1,32 @@
+{
+  "name": "09-npm-scrip",
+  "version": "1.0.0",
+  "description": "Ejercicios del 1 al 4",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "clear:modules": "rimraf **/node_modules",
+    "clear:locks": "rimraf **/package-lock.json",
+    "clear": "npm run clear:test && npm run clear:locks && npm run clear:modules",
+    "date": "echo %date%",
+    "crear": "mkdir files",
+    "crear:js": "node -e \"require('fs').writeFileSync('files/' + process.argv[1] + '.js', '', 'utf8');\"",
+    "crear:carpeta": "mkdir",
+    "borrar": "rmdir /s /q files",
+    "borrar:js": "del /s /q files\\*.js",
+    "imprimir:azul": "node --input-type=module -e \"import chalk from 'chalk'; console.log(chalk.blue(process.argv[1]));\"",
+    "imprimir:rojo": "node --input-type=module -e \"import chalk from 'chalk'; console.log(chalk.red(process.argv[1]));\"",
+    "imprimir:verde": "node --input-type=module -e \"import chalk from 'chalk'; console.log(chalk.green(process.argv[1]));\""
+  },
+  "dependencies": {
+    "chalk": "5.3.0"
+  },
+  
+  "author": "",
+  "license": "ISC"
+
+  
+}
+
