@@ -6,10 +6,11 @@
     "ava": "^5.3.1",
     "c8": "^8.0.1",
     "nyc": "^15.1.0",
-    "sonarqube-scanner": "^3.1.0"
+    "sonarqube-scanner": "^3.1.0",
+    "jest": "29.7.0"
   },
   "scripts": {
-    "test": "ava",
+    "test": "jest",
     "test:watch": "ava --watch --verbose",
     "test:html": "cross-env NODE_ENV=test nyc --reporter=html ava",
     "test:report": "(c8 --reporter lcov ava || echo 1) && node test/sonar.js",
