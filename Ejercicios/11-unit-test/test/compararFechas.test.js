@@ -1,3 +1,5 @@
+//loculon de ejercicio (no idea)
+
 import test from 'ava';
 import { dateCompare } from '../src/compararFechas.js';
 
