@@ -9,10 +9,10 @@ const eleccionUsuario = readline.createInterface({
   output: process.stdout,
 });
 
-console.log('Menú:');
-console.log('1. Crear nueva nota');
-console.log('2. Editar nota existente');
-console.log('3. Eliminar nota');
+// console.log('Menú:');
+// console.log('1. Crear nueva nota');
+// console.log('2. Editar nota existente');
+// console.log('3. Eliminar nota');
 
 if (process.argv.length > 2) {
   const opcion = process.argv[2];
