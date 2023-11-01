@@ -6,6 +6,7 @@ export const routes = {
   notFound: controllers.notFoundController,
   page: controllers.page,
   error: controllers.error,
+  hello: controllers.hello,
 };
 
 export const defaultRoute = (req, res) => {

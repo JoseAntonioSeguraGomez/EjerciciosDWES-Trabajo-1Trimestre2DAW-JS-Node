@@ -1,4 +1,5 @@
 import fs from 'fs';
+import url from 'url';
 
 export function pingController(req, res) {
   res.statusCode = 418;
@@ -16,14 +17,13 @@ export function jsonController(req, res) {
 }
 
 export function notFoundController(req, res) {
-  res.statusCode = 4044;
+  res.statusCode = 404;
   res.setHeader('Content-Type', 'text/html');
   return res.end('<h1>NotFound</h1>');
 }
 
 export function page(req, res) {
   const fichero = fs.readFileSync('./public/page.html');
-  res.statusCode = 100;
   res.setHeader('Content-Type', 'text/html');
   return res.end(fichero);
 }
@@ -34,3 +34,18 @@ export function error(req, res) {
   res.setHeader('Content-Type', 'text/html');
   return res.end(fichero);
 }
+
+export const hello = (req, res) => {
+  const parsedUrl = url.parse(req.url, true);
+  const querystring = parsedUrl.query;
+  const params = new URLSearchParams(querystring);
+  const name = params.get('name');
+
+  if (name) {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(`<h1>Hello ${name}!</h1>`);
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/html' });
+    res.end('<h1>Not Found</h1>');
+  }
+};
