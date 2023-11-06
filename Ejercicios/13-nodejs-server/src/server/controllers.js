@@ -36,10 +36,8 @@ export function error(req, res) {
 }
 
 export const hello = (req, res) => {
-  const parsedUrl = url.parse(req.url, true);
-  const querystring = parsedUrl.query;
-  const params = new URLSearchParams(querystring);
-  const name = params.get('name');
+  const { query } = url.parse(req.url, true);
+  const { name } = query;
 
   if (name) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
