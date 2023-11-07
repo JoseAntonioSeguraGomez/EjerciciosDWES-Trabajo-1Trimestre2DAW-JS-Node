@@ -36,12 +36,20 @@ export function error(req, res) {
 }
 
 export const hello = (req, res) => {
-  const { query } = url.parse(req.url, true);
-  const { name } = query;
+  const urlWithoutSlash = req.url.slice(1); // Elimina el primer carácter '/'
+  const urlParams = urlWithoutSlash.split('?');
 
-  if (name) {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(`<h1>Hello ${name}!</h1>`);
+  if (urlParams[0] === 'hello' && urlParams.length > 1) {
+    const queryParams = urlParams[1].split('=');
+    if (queryParams[0] === 'name') {
+      const name = queryParams[1];
+
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(`<h1>Hello ${name}!</h1>`);
+    } else {
+      res.writeHead(404, { 'Content-Type': 'text/html' });
+      res.end('<h1>Not Found</h1>');
+    }
   } else {
     res.writeHead(404, { 'Content-Type': 'text/html' });
     res.end('<h1>Not Found</h1>');
