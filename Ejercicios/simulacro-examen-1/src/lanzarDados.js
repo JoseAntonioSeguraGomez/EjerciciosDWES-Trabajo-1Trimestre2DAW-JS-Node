@@ -21,6 +21,7 @@ export const casillasEspeciales = (posicion) => {
 // Juego finalizado
 export const elJuegoFinalizado = (posicion) => posicion === 63;
 
+// Comprobar quien ha ganado
 export const ganador = (posicionJugador, posicionMaquina, nombreJugador) => {
   if (posicionJugador === 63) {
     return `<h2>Ha ganado el ${nombreJugador}</h2><br><a href='http://localhost:3000/reiniciar'>Reiniciar Partida</a>`;

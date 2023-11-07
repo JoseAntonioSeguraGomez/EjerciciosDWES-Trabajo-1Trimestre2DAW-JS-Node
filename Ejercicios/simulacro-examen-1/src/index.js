@@ -6,14 +6,21 @@ import {
 const server = express();
 const port = 3000;
 
-// Puntuación Jugadores:
+// Posición Jugadores:
 let posicionJugador = 1;
 let posicionMaquina = 1;
+
+// Ganar
 let juegoFinalizado = false;
+
+// Juego
 let dados = 0;
 let turnos = 1;
+
+// Nombre 
 let nombreJugador;
 
+// Menu solicitud del nombre
 server.get('/', (req, res) => {
   if (juegoFinalizado === false) {
     res.send(`
@@ -28,6 +35,7 @@ server.get('/', (req, res) => {
   }
 });
 
+// Comprobación nombre / inicio juego
 server.get('/guardar-nombre', (req, res) => {
   const { nombre } = req.query;
   if (nombre) {
@@ -40,22 +48,32 @@ server.get('/guardar-nombre', (req, res) => {
   }
 });
 
+// Lanzar Dados
 server.get('/lanzar-dados', (req, res) => {
+  // Comprobar que el usuario tenga nombre
   if (nombreJugador === undefined) {
     res.send('<h1>Debes introducir tu nombre.</h1>');
+    //Comprobar quien tiene que elegir
   } else if (turnos % 2 === 1) {
+    // Comprobar si la partida ya ha finalizado
     if (juegoFinalizado === false) {
       dados = lanzarDados();
       posicionJugador = comprobarPosicion(posicionJugador, dados);
       posicionJugador = casillasEspeciales(posicionJugador);
 
+      // Devolver datos
       res.send(`<h1>Turno: ${turnos}.</h1><h2>  ${nombreJugador} lanza los dados: ${dados}</h2>
         <br><a href='http://localhost:3000/lanzar-dados'><h2>Lanzar dado</h2></a>
         <a href='http://localhost:3000/estado'><h2>Ver estado</h2></a>`);
+
+      // Se suma un turno
       turnos += 1;
+
+      // Se commprueba si el usuario llegó a la posición 63
       juegoFinalizado = elJuegoFinalizado(posicionJugador);
     }
     res.send(`<h1>Juego finalizado</h1>${ganador(posicionJugador, posicionMaquina, nombreJugador)}`);
+    // Turno Máquina
   } else if (turnos % 2 === 0) {
     if (juegoFinalizado === false) {
       dados = lanzarDados();
@@ -72,6 +90,7 @@ server.get('/lanzar-dados', (req, res) => {
   }
 });
 
+// Mostrar la posición de los jugadores
 server.get('/estado', (req, res) => {
   res.send(`<h1>Puntuación: </h1>
   <h2>Posición del ${nombreJugador} = ${posicionJugador}</h2>
@@ -79,6 +98,7 @@ server.get('/estado', (req, res) => {
   <br><a href='http://localhost:3000/lanzar-dados'><h2>Seguir jugando</h2></a>`);
 });
 
+// Reiniciar posiciones y variables
 server.get('/reiniciar', (req, res) => {
   if (juegoFinalizado === true) {
     posicionJugador = 1;
@@ -86,8 +106,10 @@ server.get('/reiniciar', (req, res) => {
     juegoFinalizado = false;
     dados = 0;
     turnos = 1;
+    // Confirmación del reinicio
     res.send('<h1>Juego reiniciado. Comienza de nuevo.</h1><a href=\'http://localhost:3000/\'><h2>Reanudar</h2></a>');
   } else {
+    // No puedes reiniciar sin acabar la partida
     res.send('<h1>No hagas trampas</h1>');
   }
 });

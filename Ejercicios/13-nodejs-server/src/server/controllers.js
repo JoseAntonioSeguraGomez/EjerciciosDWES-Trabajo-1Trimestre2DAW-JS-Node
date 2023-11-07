@@ -36,22 +36,15 @@ export function error(req, res) {
 }
 
 export const hello = (req, res) => {
-  const urlWithoutSlash = req.url.slice(1); // Elimina el primer carácter '/'
-  const urlParams = urlWithoutSlash.split('?');
+  const myURL = new URL(`http://localhost:3000${req.url}`);
+  const { searchParams } = myURL;
+  const name = searchParams.get('name');
 
-  if (urlParams[0] === 'hello' && urlParams.length > 1) {
-    const queryParams = urlParams[1].split('=');
-    if (queryParams[0] === 'name') {
-      const name = queryParams[1];
-
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(`<h1>Hello ${name}!</h1>`);
-    } else {
-      res.writeHead(404, { 'Content-Type': 'text/html' });
-      res.end('<h1>Not Found</h1>');
-    }
+  if (name) {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(`<h1>Hello ${name}!</h1>`);
   } else {
     res.writeHead(404, { 'Content-Type': 'text/html' });
-    res.end('<h1>Not Found</h1>');
+    res.end('<h1>Parameter "name" not found</h1>');
   }
 };
