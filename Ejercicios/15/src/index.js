@@ -1,36 +1,42 @@
 import express from 'express';
+import * as controller from './controllers.js';
 
 const port = 3000;
 const server = express();
 
 server.use(express.json());
-server.use('/public', express.static);
+server.use(express.urlencoded({ extended: true}));
 
 
+server.get('/headers', controller.headersController);
+server.get('/query', controller.queryController);
+//server.get('/params/:name', controller.paramsController);
+//server.get('/params/:name/greetings', controller.greetingsController);
+/*server.get('/body', controller.bodyController);*/
 
+// Ejercicios
+server.get('/header', controller.headerController);
+server.get('/params/:name', controller.nameController);
+server.get('/query', controller.queryController);
+server.get('/body', controller.bodyController);
 
+// Ejercicios ultimos
+const animalsRouter = express.Router();
 
-// Ejercicio 1
-server.get('/header', (req, res) => {
-  const { token } = req.headers;
-
-  if (!token) {
-    return res.status(401).json({
-      code: 401,
-      error: 'Unauthorized',
-      message: 'Error: Set a token to login',
-    });
-  }
-
-  console.log('Token:', token);
-  res.send('Token received');
+animalsRouter.get('/dog', (req, res) => {
+  res.json({ grow: 'guau guau' });
 });
 
-// 2. Parametro
-server.get('/params/:name', (req, res) => {
-  const { name } = req.params;
-  res.send(`Hola ${name}`);
+animalsRouter.get('/cat', (req, res) => {
+  res.json({ grow: 'miau' });
 });
+
+animalsRouter.get('/bird', (req, res) => {
+  res.json({ grow: 'pio pio' });
+});
+
+server.use('/animals', animalsRouter);
+server.use(controller.notFoundController);
 
 server.listen(port, () => {
   console.log(`Server ready at http://localhost:${port}`);

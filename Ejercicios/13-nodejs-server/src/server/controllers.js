@@ -93,3 +93,32 @@ export const hello = (req, res) => {
   // Enviamos la respuesta
   return res.end(`<h1>${message}</h1>`);
 };
+
+/*
+export const hello = (req, res) => {
+  // Obtenemos la URL completa, incluyendo la query string
+  const fullUrl = req.url;
+
+  // Dividimos la URL en base al signo de interrogación
+  const queryParts = fullUrl.split('?');
+
+  // Verificamos si hay una cadena de consulta
+  if (queryParts.length < 2) {
+    return res.status(400).end('Bad Request: Missing query parameters');
+  }
+
+  // Obtenemos la cadena de consulta y la dividimos en pares clave-valor
+  const queryString = queryParts[1];
+  const queryParams = new URLSearchParams(queryString);
+
+  // Creamos el mensaje personalizado
+  const name = queryParams.get('name');
+  const message = name ? `Hola, ${name}!` : 'Hola!';
+
+  // Configuramos la respuesta
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+
+  // Enviamos la respuesta
+  return res.end(`<h1>${message}</h1>`);
+}; */
