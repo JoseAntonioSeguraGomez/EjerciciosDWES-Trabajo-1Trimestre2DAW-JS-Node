@@ -1,5 +1,5 @@
 import fs from 'fs';
-import url from 'url';
+import querystring from 'querystring';
 
 export function pingController(req, res) {
   res.statusCode = 418;
@@ -22,6 +22,41 @@ export function notFoundController(req, res) {
   return res.end('<h1>NotFound</h1>');
 }
 
+// Ejercicio 4
+/*
+export const page = (req, res) => {
+  const pageContent = `
+    <!DOCTYPE html>
+    <head>
+      <title>Página HTML</title>
+    </head>
+    <body>
+      <h1>Hola soy una página</h1>
+    </body>
+    </html>
+  `;
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+  return res.end(pageContent);
+};
+
+export const error = (req, res) => {
+  const errorContent = `
+    <!DOCTYPE html>
+    <head>
+      <title>Error 404</title>
+    </head>
+    <body>
+      <h1>Error 404</h1>
+    </body>
+    </html>
+  `;
+  res.statusCode = 404;
+  res.setHeader('Content-Type', 'text/html');
+  return res.end(errorContent);
+};
+*/
+// Ejercicio 5
 export function page(req, res) {
   const fichero = fs.readFileSync('./public/page.html');
   res.setHeader('Content-Type', 'text/html');
@@ -36,15 +71,25 @@ export function error(req, res) {
 }
 
 export const hello = (req, res) => {
-  const myURL = new URL(`http://localhost:3000${req.url}`);
-  const { searchParams } = myURL;
-  const name = searchParams.get('name');
+  // Obtenemos la URL completa, incluyendo la query string
+  const fullUrl = req.url;
 
-  if (name) {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(`<h1>Hello ${name}!</h1>`);
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/html' });
-    res.end('<h1>Parameter "name" not found</h1>');
-  }
+  // Utilizamos slice para obtener la query string (si existe)
+  const queryString = fullUrl.includes('?') ? fullUrl.slice(fullUrl.indexOf('?') + 1) : '';
+
+  // Parseamos la query string para obtener los parámetros
+  const params = querystring.parse(queryString);
+
+  // Obtenemos el valor del parámetro "name" o establecemos uno por defecto
+  const name = params.name || 'desconocido';
+
+  // Creamos el mensaje personalizado
+  const message = `Hola, ${name}!`;
+
+  // Configuramos la respuesta
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+
+  // Enviamos la respuesta
+  return res.end(`<h1>${message}</h1>`);
 };
