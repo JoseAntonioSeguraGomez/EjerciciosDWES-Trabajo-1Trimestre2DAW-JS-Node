@@ -7,6 +7,7 @@ export const routes = {
   page: controllers.page,
   error: controllers.error,
   hello: controllers.hello,
+  fizzbuzz: controllers.fizzbuzz,
 };
 
 export const defaultRoute = (req, res) => {

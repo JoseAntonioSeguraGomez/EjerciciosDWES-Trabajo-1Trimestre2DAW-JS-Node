@@ -1,11 +1,15 @@
 import http from 'http';
+import url from 'url';
 
 import { routes, defaultRoute } from './server/routes.js';
 
 const port = 3000;
 
 const server = http.createServer((request, response) => {
-  const route = routes[request.url.slice(1)] || defaultRoute;
+  // Llevo dos semanas con fallos en el query asqueroso, era por no añadir esta asquerosa linea de mier
+  const urlParts = url.parse(request.url);
+
+  const route = routes[urlParts.pathname.slice(1)] || defaultRoute;
   route(request, response);
 });
 

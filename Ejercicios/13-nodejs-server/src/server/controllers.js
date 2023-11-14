@@ -1,5 +1,7 @@
 import fs from 'fs';
 import querystring from 'querystring';
+import url from 'url';
+import generateFizzBuzzSequence from '../fizzbuzz.js';
 
 export function pingController(req, res) {
   res.statusCode = 418;
@@ -71,54 +73,34 @@ export function error(req, res) {
 }
 
 export const hello = (req, res) => {
-  // Obtenemos la URL completa, incluyendo la query string
   const fullUrl = req.url;
 
-  // Utilizamos slice para obtener la query string (si existe)
-  const queryString = fullUrl.includes('?') ? fullUrl.slice(fullUrl.indexOf('?') + 1) : '';
+  const queryParams = fullUrl.includes('?')
+    ? Object.fromEntries(fullUrl.split('?')[1].split('&').map((item) => item.split('=')))
+    : {};
 
-  // Parseamos la query string para obtener los parámetros
-  const params = querystring.parse(queryString);
+  const { name } = queryParams;
 
-  // Obtenemos el valor del parámetro "name" o establecemos uno por defecto
-  const name = params.name || 'desconocido';
+  const message = `Hola, ${name || 'desconocido'}!`;
 
-  // Creamos el mensaje personalizado
-  const message = `Hola, ${name}!`;
-
-  // Configuramos la respuesta
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
-
-  // Enviamos la respuesta
-  return res.end(`<h1>${message}</h1>`);
+  return res.end(`<p>${message}</p>`);
 };
 
-/*
-export const hello = (req, res) => {
-  // Obtenemos la URL completa, incluyendo la query string
-  const fullUrl = req.url;
+export function fizzbuzz(req, res) {
+  const queryParams = querystring.parse(url.parse(req.url).query);
+  const number = parseInt(queryParams.number, 10);
 
-  // Dividimos la URL en base al signo de interrogación
-  const queryParts = fullUrl.split('?');
-
-  // Verificamos si hay una cadena de consulta
-  if (queryParts.length < 2) {
-    return res.status(400).end('Bad Request: Missing query parameters');
+  if (isNaN(number) || number <= 0) {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'text/plain');
+    return res.end('Bad Request: Please provide a valid positive number.');
   }
 
-  // Obtenemos la cadena de consulta y la dividimos en pares clave-valor
-  const queryString = queryParts[1];
-  const queryParams = new URLSearchParams(queryString);
+  const sequence = generateFizzBuzzSequence(number);
 
-  // Creamos el mensaje personalizado
-  const name = queryParams.get('name');
-  const message = name ? `Hola, ${name}!` : 'Hola!';
-
-  // Configuramos la respuesta
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
-
-  // Enviamos la respuesta
-  return res.end(`<h1>${message}</h1>`);
-}; */
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(JSON.stringify({ sequence }));
+}
