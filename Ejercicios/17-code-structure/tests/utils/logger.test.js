@@ -1,5 +1,5 @@
 // logger.test.js
-import logger from '../utils/logger.js';
+import logger from '../../src/utils/logger.js';
 
 describe('Logger', () => {
   it('should log messages with timestamp and level', () => {

@@ -1,5 +1,5 @@
 // express-loader.test.js
-import expressLoader from '../loaders/express-loader.js';
+import expressLoader from '../../src/loaders/express-loader.js';
 
 describe('Express Loader', () => {
   it('should load express app with middleware', () => {

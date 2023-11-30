@@ -1,5 +1,5 @@
 // fibonacci-controller.test.js
-import { fibonacciController } from '../controllers/fibonacci-controller.js';
+import { fibonacciController } from '../../src/controllers/fibonacci-controller.js';
 
 describe('Fibonacci Controller', () => {
   it('should return the correct result for a valid input', () => {
