@@ -6,7 +6,7 @@ import notesController from './notes.js';
 const router = express.Router();
 
 //Ejercicio 1
-router.get('/notes', notesController);
+router.use('/notes', notesController);
 
 
 export default router;
