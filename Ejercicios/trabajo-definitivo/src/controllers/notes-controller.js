@@ -16,7 +16,7 @@ function FileList() {
 }
 
 //Obtener ficheros existentes
-export function getNotes(req, res) {
+export function getNotes(req, res, next) {
     //Recojo todos los ficheros
     const archivos = FileList();
     const files = archivos.filter((archivo) => path.extname(archivo) === '.note');
@@ -35,13 +35,12 @@ export function getNotes(req, res) {
     res.send(`Archivos .note en el directorio:\n${nombresArchivos.join('\n')}`);
     } catch (error) {
         console.error(`Error al obtener las notas: ${error.message}`);
-        res.status(500).send('Error interno al obtener las notas.');
-        
+        next(error);
     }
 };
 
 //Mostrar contenido de un fichero
-export function getNoteContent(req, res) {
+export function getNoteContent(req, res, next) {
     const nombreNota = req.params.name;
 
     if (!nombreNota) {
@@ -60,7 +59,7 @@ export function getNoteContent(req, res) {
         }
     } catch (error) {
         console.error(`Error al leer el contenido de la nota: ${error.message}`);
-        res.status(500).send('Error interno al obtener el contenido de la nota.');
+        next(error);
     }
 }
 
@@ -82,7 +81,7 @@ export function postNote(req, res, next) {
         res.send(`Nota creada con éxito: ${nombreNota}`);
     } catch (error) {
         console.error(`Error al escribir en el archivo de la nota: ${error.message}`);
-        res.status(500).send('Error interno al crear la nota.');
+        next(error);
     }
 }
 
@@ -107,13 +106,13 @@ export function updateNote(req, res, next) {
         }
     } catch (error) {
         console.error(`Error al editar la nota: ${error.message}`);
-        res.status(500).send('Error interno al editar la nota.');
+        next(error);
     }
 }
   
 //Eliminar ficheros segun su nombre.
-export function deleteNote(req, res) {
-    const nombreNota = req.params.name; // Obtén el nombre de la nota de los parámetros de la URL
+export function deleteNote(req, res, next) {
+    const nombreNota = req.params.name;
 
     if (!nombreNota) {
         res.status(400).send('Nombre de la nota no proporcionado.');
@@ -131,6 +130,6 @@ export function deleteNote(req, res) {
         }
     } catch (error) {
         console.error(`Error al eliminar la nota: ${error.message}`);
-        res.status(500).send('Error interno al eliminar la nota.');
+        next(error);
     }
 }
