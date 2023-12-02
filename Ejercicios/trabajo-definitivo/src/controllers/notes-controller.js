@@ -29,11 +29,16 @@ export function getNotes(req, res) {
   
     // Ordena los nombres y listarlos de forma ordenada
     const nombresArchivos = files.reverse().map((archivo, index) => `${index}. ${archivo}`);
-
-
+    
+    try {
     //Muestra los ficheros que contiene el directorio Files
     res.send(`Archivos .note en el directorio:\n${nombresArchivos.join('\n')}`);
-  };
+    } catch (error) {
+        console.error(`Error al obtener las notas: ${error.message}`);
+        res.status(500).send('Error interno al obtener las notas.');
+        
+    }
+};
 
 //Mostrar contenido de un fichero
 export function getNoteContent(req, res) {
