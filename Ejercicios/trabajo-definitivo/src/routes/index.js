@@ -1,18 +1,12 @@
 import express from 'express';
-import userRouter from './users.js';
-import { pingController, adminAccessController } from '../controllers/misc-controller.js';
-import { validateAdminMiddleware } from '../middlewares/misc-middleware.js';
-import { fibonacciController } from '../controllers/fibonacci-controller.js';
+import notesController from './notes.js';
+//import { validateAdminMiddleware } from '../middlewares/misc-middleware.js';
 
 
 const router = express.Router();
 
 //Ejercicio 1
-router.get('/ping', pingController);
-//Ejemplos
-router.get('/admin', validateAdminMiddleware, adminAccessController);
-router.use('/user', userRouter);
-//Ejercicio 2
-router.get('/fibonacci', fibonacciController);
+router.get('/notes', notesController);
+
 
 export default router;

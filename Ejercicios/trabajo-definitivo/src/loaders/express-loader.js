@@ -15,4 +15,5 @@ export default function (server){
 	server.use(router);
 	// ERRORS
 	server.use(errorMiddleware);
+
 }
