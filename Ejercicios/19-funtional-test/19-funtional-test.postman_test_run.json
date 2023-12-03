@@ -1,0 +1,201 @@
+{
+	"id": "28f1bffc-df8e-4629-b2fc-c4aca8152460",
+	"name": "19-funtional-test",
+	"timestamp": "2023-12-03T02:45:17.541Z",
+	"collection_id": "31433931-f9a2aabd-02be-4cab-b520-bbf183af6fc7",
+	"folder_id": 0,
+	"environment_id": "31433931-f2f42fc7-7ad1-4b10-9902-1db72f1ae8dc",
+	"totalPass": 9,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2023-12-03T02:45:16.665Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "9543c5e0-1a23-45f9-bb33-5a1b1aba82ad",
+			"name": "Obtener todos los usuarios",
+			"url": "http://localhost:3000/users",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status is 200": true
+			},
+			"testPassFailCounts": {
+				"Status is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Status is 200": true
+				}
+			]
+		},
+		{
+			"id": "749228ae-0ee8-47ef-a6db-288d665b705d",
+			"name": "Create User",
+			"url": "http://localhost:3000/users",
+			"time": 4,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status is 201": true,
+				"Same name created": true
+			},
+			"testPassFailCounts": {
+				"Status is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Same name created": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Status is 201": true,
+					"Same name created": true
+				}
+			]
+		},
+		{
+			"id": "0c0a608f-582f-4652-bfc3-14bc66d2bd9c",
+			"name": "Obtener un usuario",
+			"url": "http://localhost:3000/user/20",
+			"time": 5,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status is 200": true,
+				"ID is 20": true
+			},
+			"testPassFailCounts": {
+				"Status is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID is 20": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Status is 200": true,
+					"ID is 20": true
+				}
+			]
+		},
+		{
+			"id": "3ef0ecfb-e82b-40e4-843e-f85d91057fc1",
+			"name": "Update User",
+			"url": "http://localhost:3000/users/20",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status is 200": true,
+				"Same name created": true
+			},
+			"testPassFailCounts": {
+				"Status is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Same name created": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Status is 200": true,
+					"Same name created": true
+				}
+			]
+		},
+		{
+			"id": "af85dca1-6345-4fff-8170-77c7244d2296",
+			"name": "Delete User",
+			"url": "http://localhost:3000/users/20",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status is 200": true,
+				"ID is 20": true
+			},
+			"testPassFailCounts": {
+				"Status is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID is 20": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Status is 200": true,
+					"ID is 20": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 29,
+	"collection": {
+		"requests": [
+			{
+				"id": "9543c5e0-1a23-45f9-bb33-5a1b1aba82ad",
+				"method": "GET"
+			},
+			{
+				"id": "749228ae-0ee8-47ef-a6db-288d665b705d",
+				"method": "POST"
+			},
+			{
+				"id": "0c0a608f-582f-4652-bfc3-14bc66d2bd9c",
+				"method": "GET"
+			},
+			{
+				"id": "3ef0ecfb-e82b-40e4-843e-f85d91057fc1",
+				"method": "PATCH"
+			},
+			{
+				"id": "af85dca1-6345-4fff-8170-77c7244d2296",
+				"method": "DELETE"
+			}
+		]
+	}
+}

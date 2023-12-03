@@ -22,11 +22,11 @@ export function getUser(req, res) {
 
 export function postUser(req, res, next){
   const { body } = req;
-  if(!body.name || !body.name.trim()) return res.status(400).send({message: '...'});
+  if(!body.name || !body.name.trim()) return res.status(400).send({message: 'Error...'});
   const id= body.id || (parseInt(users[users.lenght-1].id)+1).toString();
 
-  if(users.some(u => u.id === id)) return res.status(409).send({message: '...'});
-  const createdUser = { id, ...body}
+  if(users.some(u => u.id === id)) return res.status(409).send({message: 'Error...'});
+  const createdUser = { id, ...body,};
   users.push(createdUser);
   return res.status(201).send(createdUser);
 }
@@ -34,22 +34,20 @@ export function postUser(req, res, next){
 export function updateUser(req, res, next) {
   const { id } = req.params;
   const user = users.find(u => u.id === id)
-  if(!user) return res.status(404).send({message: '...'});
+  if(!user) return res.status(404).send({message: 'User not found...'});
 
-  Object.entries(req.body).forEach(([Key, value]) => {
+  Object.entries(req.body).forEach(([key, value]) => {
     user[key] = value;
   })
-
 
   return res.send(user);
 }
 
 export function deleteUser(req, res) {
   const { id } = req.params;
-  const userIndex = users.findIndex(u => u.id === id)
-  if(!userIndex < 0) return res.status(404).send({message: '...'});
+  const usersIndex = users.findIndex(u => u.id === id)
+  if(usersIndex < 0) return res.status(404).send({message: 'User already exits...'});
 
   const [user] = users.splice(usersIndex, 1);
-
   res.send(user);
 }

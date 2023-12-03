@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "f9a2aabd-02be-4cab-b520-bbf183af6fc7",
+		"name": "19-funtional-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31433931"
+	},
+	"item": [
+		{
+			"name": "bulk",
+			"item": [
+				{
+					"name": "Bulk Create user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const { name, age, genre } = pm.iterationData;\r",
+									"pm.collectionVariables.set('name', name);\r",
+									"pm.collectionVariables.set('age', age);\r",
+									"pm.collectionVariables.set('genre', genre);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 201', function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.collectionVariables.set('userID', responseBody.id);\r",
+									"})\r",
+									"\r",
+									"pm.test('Same name created', function(){\r",
+									"    const responseBody = pm.response.json();\r",
+									"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+									"    pm.expect(responseBody.name).to.eql(requestBody.name);\r",
+									"})\r",
+									"\r",
+									"pm.collectionVariables.unset('name');\r",
+									"pm.collectionVariables.unset('age');\r",
+									"pm.collectionVariables.unset('genre');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"age\": {{age}},\r\n    \"genre\": \"{{genre}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener todos los usuarios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{{{environment}}_baseUrl}}/users",
+					"host": [
+						"{{{{environment}}_baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status is 201', function(){\r",
+							"    pm.response.to.have.status(201);\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.collectionVariables.set('userID', responseBody.id);\r",
+							"})\r",
+							"\r",
+							"pm.test('Same name created', function(){\r",
+							"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.name).to.eql(requestBody.name);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"20\",\r\n    \"name\": \"pepe\",\r\n    \"age\": 69,\r\n    \"genre\": \"male\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{{{environment}}_baseUrl}}/users",
+					"host": [
+						"{{{{environment}}_baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const userID = pm.collectionVariables.get('userID');\r",
+							"\r",
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test('ID is '+userID, function(){\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.id).to.eql(userID);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{{{environment}}_baseUrl}}/user/{{userID}}",
+					"host": [
+						"{{{{environment}}_baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{userID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test('Same name created', function(){\r",
+							"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.name).to.eql(requestBody.name);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Jose\",\r\n    \"age\": 19,\r\n    \"genre\": \"male\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{{{environment}}_baseUrl}}/users/{{userID}}",
+					"host": [
+						"{{{{environment}}_baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const userID = pm.collectionVariables.get('userID');\r",
+							"\r",
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test('ID is '+userID, function(){\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.id).to.eql(userID);\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.unset('userID');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{{{environment}}_baseUrl}}/users/{{userID}}",
+					"host": [
+						"{{{{environment}}_baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local_baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "pro_baseUrl",
+			"value": "http://user.com",
+			"type": "string"
+		}
+	]
+}
