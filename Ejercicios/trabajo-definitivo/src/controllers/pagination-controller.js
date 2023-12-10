@@ -1,4 +1,3 @@
-// Pagination.js
 import _ from 'lodash';
 import { FileList } from './notes-controller.js';
 import fs from 'fs';
@@ -28,7 +27,7 @@ export function getNotesWithOptions(req, res, next) {
                 return stats.size;
             } catch (error) {
                 console.error(`Error al obtener el tamaño del archivo ${file}: ${error.message}`);
-                return 0; // Puedes ajustar este valor predeterminado según tus necesidades
+                return 0;
             }
         }, ['asc']);
     } else {
