@@ -1,12 +1,11 @@
-import readline from 'readline';
+import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 
 //Ruta de los ficheros
 const directorio = 'C:/Users/joans/Documents/GitHub/DWES/Ejercicios/trabajo-definitivo/files';
 
-//Función recoge ficheros
-function FileList() {
+export function FileList() {
     try {
         return fs.readdirSync(directorio);
     } catch (error) {
