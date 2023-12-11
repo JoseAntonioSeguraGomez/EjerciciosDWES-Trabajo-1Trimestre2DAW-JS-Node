@@ -4,6 +4,8 @@ import { printDateMiddleware } from "../middlewares/misc-middleware.js";
 import { errorMiddleware } from "../middlewares/error-middleware.js";
 import { morganMiddleware } from "../config/morgan.js";
 import dotenv from 'dotenv';
+import fileUpload from 'express-fileupload';
+
 //import { authenticateJWT } from "../middlewares/auth-middleware.js";
 
 
@@ -16,6 +18,7 @@ export default function (server){
 	// MDW
 	server.use(morganMiddleware);
 	server.use(printDateMiddleware);
+	server.use(fileUpload());
 	// RUTAS
 	server.use(router);
 	// ERRORS

@@ -132,3 +132,53 @@ export function deleteNote(req, res, next) {
         next(error);
     }
 }
+
+export function importNote(req, res, next) {
+    const files = req.files;
+
+    if (!files || Object.keys(files).length === 0) {
+        res.status(400).send('No se proporcionaron archivos para importar.');
+        return;
+    }
+
+    try {
+        // Guardar cada archivo en el directorio
+        Object.values(files).forEach((file) => {
+            const filePath = path.join(directorio, file.name);
+            file.mv(filePath, (err) => {
+                if (err) {
+                    console.error(`Error al importar el archivo ${file.name}: ${err.message}`);
+                    next(err);
+                }
+            });
+        });
+
+        res.send('Notas importadas con éxito.');
+    } catch (error) {
+        console.error(`Error al importar notas: ${error.message}`);
+        next(error);
+    }
+}
+
+// Exportar una nota
+export function exportNote(req, res, next) {
+    const nombreNota = req.params.name;
+
+    if (!nombreNota) {
+        res.status(400).send('Nombre de la nota no proporcionado.');
+        return;
+    }
+
+    const rutaNota = path.join(directorio, `${nombreNota}.note`);
+
+    try {
+        if (fs.existsSync(rutaNota)) {
+            res.download(rutaNota, `${nombreNota}.note`);
+        } else {
+            res.status(404).send(`La nota con nombre ${nombreNota} no existe.`);
+        }
+    } catch (error) {
+        console.error(`Error al exportar la nota: ${error.message}`);
+        next(error);
+    }
+}
