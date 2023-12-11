@@ -1,8 +1,6 @@
 import express from 'express';
 import notesController from './notes.js';
 
-
-
 const router = express.Router();
 
 //Ejercicio 1

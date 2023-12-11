@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 
@@ -141,10 +140,19 @@ export function importNote(req, res, next) {
         return;
     }
 
+
     try {
-        // Guardar cada archivo en el directorio
         Object.values(files).forEach((file) => {
+            //Ruta del directorio con el fichero
             const filePath = path.join(directorio, file.name);
+
+            // En caso de que exista dicha ruta entonces me devuelva un error.
+            if (fs.existsSync(filePath)) {
+                console.log(`El fichero ${file.name} ya existe en el directorio.`);
+                res.status(400).send(`El fichero ${file.name} ya existe en el directorio.`);
+                return;
+            }
+
             file.mv(filePath, (err) => {
                 if (err) {
                     console.error(`Error al importar el archivo ${file.name}: ${err.message}`);

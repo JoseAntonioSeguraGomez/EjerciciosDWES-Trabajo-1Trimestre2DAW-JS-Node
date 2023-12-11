@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { FileList } from './notes-controller.js';
 import fs from 'fs';
 import path from 'path';
@@ -6,7 +5,7 @@ import path from 'path';
 const directorio = 'C:/Users/joans/Documents/GitHub/DWES/Ejercicios/trabajo-definitivo/files';
 
 export function getNotesWithOptions(req, res, next) {
-    const { sortBy, filterText, page, pageSize } = req.query;
+    const { sortBy, filterText, page, pageSize, sortOrder } = req.query;
 
     const archivos = FileList();
     const files = archivos.filter((archivo) => path.extname(archivo) === '.note');
@@ -18,18 +17,24 @@ export function getNotesWithOptions(req, res, next) {
     let sortedFiles;
 
     if (sortBy === 'title') {
-        sortedFiles = _.orderBy(filteredFiles, [(file) => file], ['asc']);
+        sortedFiles = filteredFiles.slice().sort((a, b) => {
+            const compareResult = a.localeCompare(b);
+            return sortOrder === 'desc' ? -compareResult : compareResult;
+        });
     } else if (sortBy === 'size') {
-        sortedFiles = _.orderBy(filteredFiles, (file) => {
+        sortedFiles = filteredFiles.slice().sort((fileA, fileB) => {
             try {
-                const filePath = path.join(directorio, file);
-                const stats = fs.statSync(filePath);
-                return stats.size;
+                const filePathA = path.join(directorio, fileA);
+                const filePathB = path.join(directorio, fileB);
+                const statsA = fs.statSync(filePathA);
+                const statsB = fs.statSync(filePathB);
+                const compareResult = statsA.size - statsB.size;
+                return sortOrder === 'desc' ? -compareResult : compareResult;
             } catch (error) {
-                console.error(`Error al obtener el tamaño del archivo ${file}: ${error.message}`);
+                console.error(`Error al obtener el tamaño del archivo: ${error.message}`);
                 return 0;
             }
-        }, ['asc']);
+        });
     } else {
         sortedFiles = filteredFiles;
     }
