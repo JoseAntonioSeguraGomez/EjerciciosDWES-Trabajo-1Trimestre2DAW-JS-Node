@@ -6,15 +6,13 @@ import { morganMiddleware } from "../config/morgan.js";
 import dotenv from 'dotenv';
 import fileUpload from 'express-fileupload';
 
-//import { authenticateJWT } from "../middlewares/auth-middleware.js";
-
 
 dotenv.config();
 
 export default function (server){
 	// CONFIG
 	server.use(express.json());
-	server.use(express.urlencoded());
+	server.use(express.urlencoded({ extended: true }));
 	// MDW
 	server.use(morganMiddleware);
 	server.use(printDateMiddleware);
@@ -23,16 +21,5 @@ export default function (server){
 	server.use(router);
 	// ERRORS
 	server.use(errorMiddleware);
-
-	// Middleware de autenticación
-	/*
-	server.use((req, res, next) => {
-	const { path } = req;
-	if (path !== '/auth' && !path.startsWith('/notes')) {
-		return authenticateJWT(req, res, next);
-	}
-	next();
-	});
-	*/
 }
 	

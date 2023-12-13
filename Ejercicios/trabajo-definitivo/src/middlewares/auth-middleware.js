@@ -1,17 +1,26 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import { HttpStatusError } from 'common-errors';
+import logger from '../utils/logger.js';
 
-dotenv.config();
 
 export function authenticateJWT(req, res, next) {
-  const token = req.header('Authorization');
+  const { SECRET_KEY: secretKey } = process.env;
 
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+  console.log(req.headers.authorization);
+  console.log(secretKey);
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: 'Forbidden' });
+  const {authorization} = req.headers;
 
-    req.user = user;
-    next();
-  });
+  if (!authorization) throw HttpStatusError(401, 'No token proviced');
+
+  const [_Bearer, token] = authorization.split(' ');
+
+  try {
+    jwt.verify(token, secretKey);
+    console.log('Token verification successful');
+  } catch (err) {
+    logger.error(err.message);
+    throw HttpStatusError(401, 'Invalid Token');
+  }
+  next();
 }
