@@ -160,8 +160,8 @@ export function importNote(req, res, next) {
                 }
             });
         });
+        return res.status(200).json({ message: 'Notas importadas con éxito' });
 
-        res.send('Notas importadas con éxito.');
     } catch (error) {
         console.error(`Error al importar notas: ${error.message}`);
         next(error);

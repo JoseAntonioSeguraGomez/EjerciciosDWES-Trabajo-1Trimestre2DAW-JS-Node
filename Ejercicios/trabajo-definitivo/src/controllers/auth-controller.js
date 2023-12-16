@@ -19,7 +19,8 @@ export function authenticateUser(req, res) {
         const userInfo = { user: username };
         const jwtConfig = { expiresIn: '1h'};
         const token = jwt.sign(userInfo, secretKey, jwtConfig);
-        return res.send({token});
+        return res.status(200).json({ token });
+
       } else {
           res.status(401).json({ message: 'Invalid credentials' });
       }

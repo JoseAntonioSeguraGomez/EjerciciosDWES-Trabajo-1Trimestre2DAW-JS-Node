@@ -6,6 +6,8 @@ import { morganMiddleware } from "../config/morgan.js";
 import dotenv from 'dotenv';
 import fileUpload from 'express-fileupload';
 
+import swaggerUi from 'swagger-ui-express';
+import {swaggerDoc} from '../openapi/openapi.js'
 
 dotenv.config();
 
@@ -21,5 +23,8 @@ export default function (server){
 	server.use(router);
 	// ERRORS
 	server.use(errorMiddleware);
+	// SWAGGER
+	server.get('/docs', (req, res) => res.send(swaggerDoc));
+	server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 }
 	

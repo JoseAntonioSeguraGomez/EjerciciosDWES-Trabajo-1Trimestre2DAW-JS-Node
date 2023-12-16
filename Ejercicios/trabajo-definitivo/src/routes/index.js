@@ -3,13 +3,18 @@ import notesController from './notes.js';
 import { authenticateJWT } from '../middlewares/auth-middleware.js';
 import { authenticateUser } from '../controllers/auth-controller.js';
 import { errorMiddleware } from '../middlewares/error-middleware.js';
+import {importNote, exportNote} from '../controllers/notes-controller.js';
+import {getNotesWithOptions} from '../controllers/pagination-controller.js';
 
 const router = express.Router();
 
 //Ruta para la autenticación
+router.get('/notesWithOptions',authenticateJWT, getNotesWithOptions);
 router.post('/login', authenticateUser);
+router.post('/import',authenticateJWT, importNote);
+router.get('/export/:name',authenticateJWT, exportNote);
 
-router.use('/notes', authenticateJWT, errorMiddleware, notesController);
+router.use('/notes',authenticateJWT, errorMiddleware, notesController);
 
 
 

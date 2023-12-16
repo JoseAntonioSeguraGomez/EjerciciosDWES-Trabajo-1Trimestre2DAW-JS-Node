@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: API
+  description: 
+  version: 1.0.0
+components:
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /notes:
+    get:
+      summary: Obtener la lista de notas
+      security:
+       - jwt: []
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              example: { Archivos .note en el directorio: 0. Fichero2 1. Fichero2}
+        security:
+          - jwt: []
+  /notes/{name}:
+    get:
+      summary: Obtener el contenido de una nota específica
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              example: { content: 'Contenido de la nota' }
+        '404':
+          description: Nota no encontrada
+          content:
+            application/json:
+              example: { error: 'La nota no existe' }
+    post:
+      summary: Crear nueva nota
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Contenido de la nota
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contenido:
+                  type: string
+      responses:
+        '200':
+          description: Nota creada con éxito
+    patch:
+      summary: Actualizar contenido de una nota existente
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Nuevo contenido de la nota
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contenido:
+                  type: string
+      responses:
+        '200':
+          description: Nota actualizada con éxito
+        '404':
+          description: Nota no encontrada
+          content:
+            application/json:
+              example: { error: 'La nota no existe' }
+  /import:
+    post:
+      summary: Importar notas desde archivos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Notas importadas con éxito
+        '400':
+          description: No se proporcionaron archivos para importar
+  /export/{name}:
+    get:
+      summary: Exportar una nota
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Nota exportada con éxito
+        '400':
+          description: Nombre de la nota no proporcionado
+        '404':
+          description: La nota con nombre {name} no existe
+  /login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              example: { token: 'tu-token-jwt-aqui' }
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              example: { message: 'Invalid credentials' }
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              example: { message: 'Internal server error' }
+  /notesWithOptions:
+    get:
+      summary: Obtener notas con opciones de paginación y ordenamiento
+      parameters:
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+          description: Campo por el cual ordenar las notas (title o size)
+        - name: filterText
+          in: query
+          schema:
+            type: string
+          description: Texto para filtrar las notas
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+          description: Número de página
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          description: Tamaño de la página
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+            enum: ['asc', 'desc']
+          description: Orden de clasificación (ascendente o descendente)
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              example: { totalPages: 2, currentPage: 1, pageSize: 10, notes: ['1. Nota1', '2. Nota2'] }
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              example: { message: 'Internal server error' }
