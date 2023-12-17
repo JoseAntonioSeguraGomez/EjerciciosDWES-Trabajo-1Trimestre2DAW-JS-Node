@@ -18,6 +18,7 @@ export default function (server){
 	// MDW
 	server.use(morganMiddleware);
 	server.use(printDateMiddleware);
+	// SUBIR FICHEROS
 	server.use(fileUpload());
 	// RUTAS
 	server.use(router);

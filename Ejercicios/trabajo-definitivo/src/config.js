@@ -1,5 +1,6 @@
 import 'dotenv/config';
 
+// Carga de puerto y secretkey
 const app = {
     port: process.env.PORT || 3000,
     secretKey: process.env.SECRET_KEY,

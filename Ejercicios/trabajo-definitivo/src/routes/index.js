@@ -10,10 +10,15 @@ const router = express.Router();
 
 //Ruta para la autenticación
 router.get('/notesWithOptions',authenticateJWT, getNotesWithOptions);
+
+// Login
 router.post('/login', authenticateUser);
+
+// Importar y exportar
 router.post('/import',authenticateJWT, importNote);
 router.get('/export/:name',authenticateJWT, exportNote);
 
+// Ruta Principal
 router.use('/notes',authenticateJWT, errorMiddleware, notesController);
 
 

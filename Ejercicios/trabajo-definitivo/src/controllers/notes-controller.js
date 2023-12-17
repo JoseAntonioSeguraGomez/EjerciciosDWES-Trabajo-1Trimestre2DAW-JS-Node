@@ -4,6 +4,7 @@ import path from 'path';
 //Ruta de los ficheros
 const directorio = 'C:/Users/joans/Documents/GitHub/DWES/Ejercicios/trabajo-definitivo/files';
 
+// Lista de ficheros
 export function FileList() {
     try {
         return fs.readdirSync(directorio);
@@ -132,9 +133,11 @@ export function deleteNote(req, res, next) {
     }
 }
 
+// Importar notas
 export function importNote(req, res, next) {
     const files = req.files;
 
+    //Verifica si se ha otorgado un fichero
     if (!files || Object.keys(files).length === 0) {
         res.status(400).send('No se proporcionaron archivos para importar.');
         return;
@@ -172,13 +175,16 @@ export function importNote(req, res, next) {
 export function exportNote(req, res, next) {
     const nombreNota = req.params.name;
 
+    // Verfica que la nota exista
     if (!nombreNota) {
         res.status(400).send('Nombre de la nota no proporcionado.');
         return;
     }
 
+    // Crea la ruta del fichero en concreto
     const rutaNota = path.join(directorio, `${nombreNota}.note`);
 
+    // Descarga el fichero
     try {
         if (fs.existsSync(rutaNota)) {
             res.download(rutaNota, `${nombreNota}.note`);

@@ -2,20 +2,25 @@ import { FileList } from './notes-controller.js';
 import fs from 'fs';
 import path from 'path';
 
+// Directorio de los ficheros
 const directorio = 'C:/Users/joans/Documents/GitHub/DWES/Ejercicios/trabajo-definitivo/files';
 
 export function getNotesWithOptions(req, res, next) {
+    // Datos que puede recoger
     const { sortBy, filterText, page, pageSize, sortOrder } = req.query;
 
+    // Lista de ficheros
     const archivos = FileList();
     const files = archivos.filter((archivo) => path.extname(archivo) === '.note');
 
+    // Filtro
     const filteredFiles = filterText
         ? files.filter((file) => file.toLowerCase().includes(filterText.toLowerCase()))
         : files;
 
     let sortedFiles;
 
+    // Ordenar por titulo y tamaño
     if (sortBy === 'title') {
         sortedFiles = filteredFiles.slice().sort((a, b) => {
             const compareResult = a.localeCompare(b);
@@ -39,6 +44,7 @@ export function getNotesWithOptions(req, res, next) {
         sortedFiles = filteredFiles;
     }
 
+    // Resultado y paginado
     const totalItems = sortedFiles.length;
     const totalPages = Math.ceil(totalItems / pageSize);
     const currentPage = Math.min(Math.max(1, page || 1), totalPages);
