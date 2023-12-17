@@ -22,8 +22,24 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJpYXQiOjE3MDI1MDY3MDYsImV4cCI6MTcwMjUxMDMwNn0.vhZg8a_1p0Z0EaYEvDZZFDz5B_n-JYkuP9Xc--x0f-M",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:3000/notes",
 					"protocol": "http",
@@ -100,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/notes/fichero1",
+					"raw": "http://localhost:3000/notes/fichero3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -108,7 +124,7 @@
 					"port": "3000",
 					"path": [
 						"notes",
-						"fichero1"
+						"fichero3"
 					]
 				}
 			},
@@ -191,12 +207,39 @@
 		},
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json();\r",
+							"const { token } = body;\r",
+							"pm.collectionVariables.set('token', token);\r",
+							"\r",
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"joans\",\r\n  \"password\": \"1234alcachofa\"\r\n}\r\n",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"1234alcachofa\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -204,14 +247,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/auth",
+					"raw": "http://localhost:3000/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"auth"
+						"login"
 					]
 				}
 			},
@@ -219,17 +262,31 @@
 		},
 		{
 			"name": "Paginado, ordenado y filtrado por nombre",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/notesWithOptions?page=1&pageSize=20&sortBy=tittle&filterText=o",
+					"raw": "http://localhost:3000/notes/notesWithOptions?page=1&pageSize=5&sortBy=title&sortOrder=asc&filterText=o",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
+						"notes",
 						"notesWithOptions"
 					],
 					"query": [
@@ -239,11 +296,15 @@
 						},
 						{
 							"key": "pageSize",
-							"value": "20"
+							"value": "5"
 						},
 						{
 							"key": "sortBy",
-							"value": "tittle"
+							"value": "title"
+						},
+						{
+							"key": "sortOrder",
+							"value": "asc"
 						},
 						{
 							"key": "filterText",
@@ -256,6 +317,19 @@
 		},
 		{
 			"name": "Exportar Ficheros",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -277,16 +351,36 @@
 		},
 		{
 			"name": "Import Ficheros",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "",
 							"type": "file",
-							"src": "/C:/Users/joans/Downloads/importe.note"
+							"src": "/C:/Users/joans/Downloads/pepe.note"
 						}
 					]
 				},
@@ -304,6 +398,42 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }

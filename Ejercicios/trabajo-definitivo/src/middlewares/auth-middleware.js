@@ -1,13 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { HttpStatusError } from 'common-errors';
 import logger from '../utils/logger.js';
+import config from '../config.js'
 
 
 export function authenticateJWT(req, res, next) {
-  const { SECRET_KEY: secretKey } = process.env;
-
   console.log(req.headers.authorization);
-  console.log(secretKey);
+  console.log(config.app.secretKey);
 
   const {authorization} = req.headers;
 
@@ -16,7 +15,7 @@ export function authenticateJWT(req, res, next) {
   const [_Bearer, token] = authorization.split(' ');
 
   try {
-    jwt.verify(token, secretKey);
+    jwt.verify(token, config.app.secretKey);
     console.log('Token verification successful');
   } catch (err) {
     logger.error(err.message);

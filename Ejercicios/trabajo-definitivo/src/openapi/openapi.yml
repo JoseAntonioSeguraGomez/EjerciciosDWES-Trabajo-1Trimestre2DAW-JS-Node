@@ -21,11 +21,11 @@ paths:
           content:
             application/json:
               example: { Archivos .note en el directorio: 0. Fichero2 1. Fichero2}
-        security:
-          - jwt: []
   /notes/{name}:
     get:
       summary: Obtener el contenido de una nota específica
+      security:
+       - jwt: []
       parameters:
         - name: name
           in: path
@@ -45,6 +45,8 @@ paths:
               example: { error: 'La nota no existe' }
     post:
       summary: Crear nueva nota
+      security:
+       - jwt: []
       parameters:
         - name: name
           in: path
@@ -66,6 +68,8 @@ paths:
           description: Nota creada con éxito
     patch:
       summary: Actualizar contenido de una nota existente
+      security:
+       - jwt: []
       parameters:
         - name: name
           in: path
@@ -93,6 +97,8 @@ paths:
   /import:
     post:
       summary: Importar notas desde archivos
+      security:
+       - jwt: []
       requestBody:
         required: true
         content:
@@ -113,6 +119,8 @@ paths:
   /export/{name}:
     get:
       summary: Exportar una nota
+      security:
+       - jwt: []
       parameters:
         - name: name
           in: path
@@ -129,6 +137,8 @@ paths:
   /login:
     post:
       summary: Iniciar sesión
+      security:
+       - jwt: []
       requestBody:
         required: true
         content:
@@ -159,11 +169,14 @@ paths:
   /notesWithOptions:
     get:
       summary: Obtener notas con opciones de paginación y ordenamiento
+      security:
+       - jwt: []
       parameters:
         - name: sortBy
           in: query
           schema:
             type: string
+            enum: ['title', 'size']
           description: Campo por el cual ordenar las notas (title o size)
         - name: filterText
           in: query
