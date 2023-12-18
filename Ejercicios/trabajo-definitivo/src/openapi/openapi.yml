@@ -137,8 +137,6 @@ paths:
   /login:
     post:
       summary: Iniciar sesión
-      security:
-       - jwt: []
       requestBody:
         required: true
         content:
