@@ -107,21 +107,6 @@ test('updateNote function should edit the content of an existing note with statu
   await updateNote(req, res);
 });
 
-test('deleteNote function should delete an existing note with status code 202', async (t) => {
-  const req = { params: { name: testNoteName } };
-  const res = {
-    send: (data) => {
-      t.true(data.includes('eliminada con éxito'));
-    },
-    status: (code) => {
-      t.is(code, 202);
-      return res;
-    },
-  };
-
-  await deleteNote(req, res);
-});
-
 /*
 test('importNote function should import new notes with status code 201', async (t) => {
   const req = {
@@ -141,7 +126,7 @@ test('importNote function should import new notes with status code 201', async (
 
   await importNote(req, res);
 });
-
+*/
 test('exportNote function should export an existing note with status code 200', async (t) => {
   const req = { params: { name: testNoteName } };
   const res = {
@@ -158,4 +143,18 @@ test('exportNote function should export an existing note with status code 200', 
   await exportNote(req, res);
 
 });
-*/
+
+test('deleteNote function should delete an existing note with status code 202', async (t) => {
+  const req = { params: { name: testNoteName } };
+  const res = {
+    send: (data) => {
+      t.true(data.includes('eliminada con éxito'));
+    },
+    status: (code) => {
+      t.is(code, 202);
+      return res;
+    },
+  };
+
+  await deleteNote(req, res);
+});

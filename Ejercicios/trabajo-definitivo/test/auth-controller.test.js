@@ -1,6 +1,6 @@
 import test from 'ava';
 import express from 'express';
-import { authenticateUser } from '../../src/controllers/auth-controller.js';
+import { authenticateUser } from '../src/controllers/auth-controller.js';
 
 test('authenticateUser should return a valid JWT token for correct credentials', async (t) => {
   const app = express();
