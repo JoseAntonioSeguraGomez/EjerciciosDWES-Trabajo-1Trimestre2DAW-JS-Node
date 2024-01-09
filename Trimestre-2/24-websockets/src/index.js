@@ -11,11 +11,22 @@ const server = app.listen(port, () => {
 const io = new Server(server);
 
 io.on('connection', (socket) => {
-    socket.emit('hello', 'holita UwU');
-    io.emit('all', 'todos 7w7');
-    
-    console.log('A user has connected');
+
+    socket.emit('single', 'toy solo UwU');
+    io.emit('all', 'Conectado');
+    socket.on('echo', (data) =>{
+        console.log('echo');
+        io.emit('all', data);
+    })
+
+    socket.on('hello', () => console.log('hello'));
+
+    console.log(`A user has connected`);
     socket.on('disconnect', () => {
-        console.log('A user has disconnected');
+        console.log(`${socket.handshake.address} has disconnected`);
     });
 });
+
+setInterval(() => {
+    io.emit('date', new Date());
+}, 1000);
