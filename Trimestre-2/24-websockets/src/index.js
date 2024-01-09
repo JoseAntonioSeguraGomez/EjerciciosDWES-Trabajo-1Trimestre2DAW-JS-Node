@@ -11,6 +11,9 @@ const server = app.listen(port, () => {
 const io = new Server(server);
 
 io.on('connection', (socket) => {
+    socket.emit('hello', 'holita UwU');
+    io.emit('all', 'todos 7w7');
+    
     console.log('A user has connected');
     socket.on('disconnect', () => {
         console.log('A user has disconnected');

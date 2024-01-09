@@ -3,11 +3,18 @@
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.3/socket.io.js"></script>
         <script defer>
-            const socket = io()
+            const socket = io();
+            socket.on('hello', (data) => {
+                console.log(data);
+            })
+            socket.on('all', (data) => {
+                console.log(data);
+            })
         </script>
     </head>
     <body>
-        <h1>Websocket</h1>
-        <p>Open the console to see the messages</p>
+        <ul id="messages">
+
+        </ul>
     </body>
 </html>
