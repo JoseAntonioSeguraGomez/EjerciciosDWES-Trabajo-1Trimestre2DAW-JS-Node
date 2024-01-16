@@ -1,9 +1,8 @@
 import nodemailer from "nodemailer";
-import { error } from "winston";
 
 let transporter = null;
 
-export function init() {
+export function init(config) {
   const smtpConfig = {
   host: config.host,
   port: config.port,
@@ -12,8 +11,8 @@ export function init() {
 
 if(config.user){
   smtpConfig.auth = {
-      user: config.user,
-      pass: config.password,
+      user: config.smtp.user,
+      pass: config.smtp.password,
     };
   }
 
@@ -28,15 +27,10 @@ transporter.verify(function(error, success){
   });
 }
 
-export async function sendMail (mailOptions){
-let info = await transporter.sendMail({
-  from: 'its@me.com',
-  to: "nose@cual.es",
-  subject: "Mensaje de prueba",
-  text: "Este es el texto",
-  html: "<h1 style='color: blue'>Este es el HTML</h1>",
-});
-console.log("Message sent: %s", info.messageId);
+export async function send(mailOptions){
+  return transporter.sendMail({
+    from: transporter.options.auth.user,
+    ...mailOptions
+  })
 }
 
-main().catch(console.error);

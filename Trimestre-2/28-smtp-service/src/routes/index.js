@@ -1,10 +1,11 @@
 import express from 'express';
-import { login } from '../controllers/login-controller.js';
+import { mailController } from '../controllers/mail-controller.js';
 import miscRouter from './misc-router.js';
 
 const router = express.Router();
 
-router.post('/login', login);
+router.post('/mail', mailController);
+
 
 router.use(miscRouter);
 
